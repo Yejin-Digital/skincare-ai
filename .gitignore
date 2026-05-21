@@ -15,6 +15,7 @@
 
 # next.js
 /.next/
+.turbo/
 /out/
 
 # production
@@ -47,3 +48,4 @@ next-env.d.ts
 
 #VS Code Local History
 .history/
+node_modules/.cache/

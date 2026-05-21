@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "clean": "rm -rf .next .turbo node_modules/.cache *.tsbuildinfo",
+    "clean:all": "rm -rf .next .turbo node_modules .next package-lock.json && npm install"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.97.1",
