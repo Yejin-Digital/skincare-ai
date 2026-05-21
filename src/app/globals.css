@@ -1,26 +1,168 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* =============================================
+   PALETTE TOKENS (정적)
+   @theme에 등록 → Tailwind 유틸리티 자동 생성
+   사용: bg-primary-500, text-neutral-800 등
+   ============================================= */
+
+@theme {
+  /* --- Primary: Sage Green --- */
+  --color-primary-50:  #F3F7F3;
+  --color-primary-100: #D9EAD9;
+  --color-primary-200: #B4D4B5;
+  --color-primary-300: #8ABD8C;
+  --color-primary-400: #65A468;   /* hover */
+  --color-primary-500: #4D8C50;   /* 메인 액센트 / CTA */
+  --color-primary-600: #3D7040;   /* active */
+  --color-primary-700: #2F5632;
+  --color-primary-800: #1F3B22;
+  --color-primary-900: #112014;
+
+  /* --- Neutral: Warm White → Warm Black --- */
+  --color-neutral-0:   #FAFAF8;   /* 페이지 배경 (오프화이트) */
+  --color-neutral-100: #F3F2EF;
+  --color-neutral-200: #E5E3DE;
+  --color-neutral-300: #C9C7C0;
+  --color-neutral-400: #A9A79F;
+  --color-neutral-500: #87857C;   /* 보조 텍스트 */
+  --color-neutral-600: #636158;
+  --color-neutral-700: #4A4840;
+  --color-neutral-800: #2E2D27;   /* 본문 텍스트 */
+  --color-neutral-900: #1A1916;   /* 헤드라인 */
+
+  /* --- Semantic: 상태 색상 --- */
+  --color-success:    #4D8C50;   /* primary-500 재활용 */
+  --color-success-bg: #D9EAD9;
+  --color-warning:    #D97706;
+  --color-warning-bg: #FEF3C7;
+  --color-error:      #DC2626;
+  --color-error-bg:   #FEE2E2;
+  --color-info:       #2563EB;
+  --color-info-bg:    #DBEAFE;
+
+  /* --- Typography --- */
+  --font-sans: var(--font-geist-sans), "Pretendard", "Apple SD Gothic Neo",
+               ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+
+  /* --- Border Radius --- */
+  --radius-sm:   0.375rem;   /* 6px  */
+  --radius-md:   0.5rem;     /* 8px  */
+  --radius-lg:   0.75rem;    /* 12px */
+  --radius-xl:   1rem;       /* 16px */
+  --radius-2xl:  1.5rem;     /* 24px */
+  --radius-full: 9999px;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* =============================================
+   시맨틱 CSS 변수 — 라이트 모드 (기본)
+   접두사 --skin-*: @theme 변수명과 충돌 방지
+   ============================================= */
+
+:root {
+  /* Backgrounds */
+  --skin-bg-page:    #FAFAF8;   /* 전체 페이지 배경 */
+  --skin-bg-card:    #FFFFFF;   /* 카드, 모달 */
+  --skin-bg-section: #F3F2EF;   /* 섹션 구분, 인풋 배경 */
+
+  /* Text */
+  --skin-text-heading:    #1A1916;   /* 제목 */
+  --skin-text-body:       #2E2D27;   /* 본문 */
+  --skin-text-muted:      #87857C;   /* 부가 설명, placeholder */
+  --skin-text-disabled:   #C9C7C0;   /* 비활성화 */
+  --skin-text-on-primary: #FFFFFF;   /* Primary 위 텍스트 */
+
+  /* Border */
+  --skin-border:        #E5E3DE;   /* 기본 테두리 */
+  --skin-border-subtle: #F3F2EF;   /* 섬세한 구분선 */
+  --skin-border-strong: #A9A79F;   /* 강조 테두리 */
+
+  /* Interactive */
+  --skin-interactive:        #4D8C50;   /* CTA 기본 */
+  --skin-interactive-hover:  #65A468;   /* CTA hover */
+  --skin-interactive-active: #3D7040;   /* CTA active/pressed */
+  --skin-focus-ring:         #65A468;   /* 포커스 링 */
 }
+
+/* =============================================
+   시맨틱 CSS 변수 — 다크 모드
+   prefers-color-scheme: dark 자동 적용
+   ============================================= */
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    /* Backgrounds */
+    --skin-bg-page:    #1A1916;
+    --skin-bg-card:    #2E2D27;
+    --skin-bg-section: #232118;
+
+    /* Text */
+    --skin-text-heading:    #F3F2EF;
+    --skin-text-body:       #E5E3DE;
+    --skin-text-muted:      #A9A79F;
+    --skin-text-disabled:   #4A4840;
+    --skin-text-on-primary: #FFFFFF;
+
+    /* Border */
+    --skin-border:        #4A4840;
+    --skin-border-subtle: #2E2D27;
+    --skin-border-strong: #87857C;
+
+    /* Interactive — 다크에서 대비 확보 위해 한 단계 밝게 */
+    --skin-interactive:        #65A468;   /* primary-400 */
+    --skin-interactive-hover:  #8ABD8C;   /* primary-300 */
+    --skin-interactive-active: #4D8C50;   /* primary-500 */
+    --skin-focus-ring:         #8ABD8C;   /* primary-300 */
   }
 }
 
+/* =============================================
+   @theme inline — 시맨틱 Tailwind 유틸리티
+   --skin-* 변수를 Tailwind 클래스로 연결.
+   사용: bg-surface-page, text-heading,
+         border-border-default, bg-cta 등
+   ============================================= */
+
+@theme inline {
+  /* Surface (배경 레이어) */
+  --color-surface-page:    var(--skin-bg-page);
+  --color-surface-card:    var(--skin-bg-card);
+  --color-surface-section: var(--skin-bg-section);
+
+  /* Text */
+  --color-text-heading:  var(--skin-text-heading);
+  --color-text-body:     var(--skin-text-body);
+  --color-text-muted:    var(--skin-text-muted);
+  --color-text-disabled: var(--skin-text-disabled);
+  --color-text-inverse:  var(--skin-text-on-primary);
+
+  /* Border */
+  --color-border-default: var(--skin-border);
+  --color-border-subtle:  var(--skin-border-subtle);
+  --color-border-strong:  var(--skin-border-strong);
+
+  /* CTA / Interactive */
+  --color-cta:        var(--skin-interactive);
+  --color-cta-hover:  var(--skin-interactive-hover);
+  --color-cta-active: var(--skin-interactive-active);
+}
+
+/* =============================================
+   BASE STYLES
+   ============================================= */
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--skin-bg-page);
+  color: var(--skin-text-body);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 포커스 링 — WCAG AA 접근성 준수 */
+*:focus-visible {
+  outline: 2px solid var(--skin-focus-ring);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
 }
